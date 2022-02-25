@@ -19,12 +19,20 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MenuIcon from "@mui/icons-material/Menu";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
+import AddIcon from "@mui/icons-material/Add";
 import Map from './Map'
+import Fab from '@mui/material/Fab';
+
+const fabStyle = {
+  position: 'absolute',
+  bottom: 60,
+  right: 60,
+};
 
 function Dashboard() {
   const [user, loading, error] = useAuthState(auth);
   const [name, setName] = useState("");
-  const [drawer, setDrawer] = useState("");
+  const [drawer, setDrawer] = useState(false);
   const navigate = useNavigate();
 
   const toggleDrawer = (open) => (event) => {
@@ -127,6 +135,9 @@ function Dashboard() {
         </Toolbar>
       </AppBar>
       <Map />
+      <Fab sx={fabStyle} color="secondary" aria-label="add" onClick={() => navigate("/add")}>
+        <AddIcon />
+      </Fab>
     </div>
   );
 }
