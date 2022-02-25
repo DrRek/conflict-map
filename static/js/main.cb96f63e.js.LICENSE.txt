@@ -4,14 +4,6 @@ object-assign
 @license MIT
 */
 
-/*!
-	query-string
-	Parse and stringify URL query strings
-	https://github.com/sindresorhus/query-string
-	by Sindre Sorhus
-	MIT License
-*/
-
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
 
@@ -77,23 +69,6 @@ PERFORMANCE OF THIS SOFTWARE.
       * See the License for the specific language governing permissions and
       * limitations under the License.
       */
-
-/**
-   * History.getInternetExplorerMajorVersion()
-   * Get's the major version of Internet Explorer
-   * @return {integer}
-   * @license Public Domain
-   * @author Benjamin Arthur Lupton <contact@balupton.com>
-   * @author James Padolsey <https://gist.github.com/527683>
-   */
-
-/**
-   * History.isInternetExplorer()
-   * Are we using Internet Explorer?
-   * @return {boolean}
-   * @license Public Domain
-   * @author Benjamin Arthur Lupton <contact@balupton.com>
-   */
 
 /**
   * @license
@@ -263,20 +238,6 @@ PERFORMANCE OF THIS SOFTWARE.
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-
-/**
- * History.js Core
- * @author Benjamin Arthur Lupton <contact@balupton.com>
- * @copyright 2010-2011 Benjamin Arthur Lupton <contact@balupton.com>
- * @license New BSD License <http://creativecommons.org/licenses/BSD/>
- */
-
-/**
- * History.js Native Adapter
- * @author Benjamin Arthur Lupton <contact@balupton.com>
- * @copyright 2010-2011 Benjamin Arthur Lupton <contact@balupton.com>
- * @license New BSD License <http://creativecommons.org/licenses/BSD/>
  */
 
 /**
