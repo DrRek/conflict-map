@@ -55,6 +55,7 @@ const signInWithGoogle = async () => {
     console.error(err);
     alert(err.message);
   }
+  console.log(auth)
 };
 
 const logout = () => {

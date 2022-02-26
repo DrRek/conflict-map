@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import GoogleMapReact from "google-map-react";
+import { setSelectionRange } from "@testing-library/user-event/dist/utils";
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
@@ -21,29 +22,34 @@ const DotMarker = ({ color, onClick }) => (
 class SimpleMap extends Component {
   static defaultProps = {
     center: {
-      lat: 59.95,
-      lng: 30.33,
+      lat: 50.4456484,
+      lng: 30.5389313,
     },
-    zoom: 11,
+    zoom: 4,
   };
 
   render() {
+    const { markers, setSelectedMarker } = this.props;
 
     return (
       // Important! Always set the container height explicitly
-      <div style={{ height: "calc(100vh - 64px)", width: "100%" }}>
+      <div style={{ height: "100%", width: "100%" }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: "AIzaSyDGzOCfMaPrmtJ2Pke0wdIzkWCRLPloeQA" }}
           defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
           onClick={(a, b, c) => console.log(a, b, c)}
         >
-          <DotMarker
-            lat={this.props.center.lat}
-            lng={this.props.center.lng}
-            color="yellow"
-            onClick={() => console.log("clicked")}
-          />
+          {markers &&
+            markers.map((marker, index) => (
+              <DotMarker
+                key={index}
+                lat={marker.lat}
+                lng={marker.lng}
+                color="yellow"
+                onClick={() => setSelectedMarker(marker.data)}
+              />
+            ))}
         </GoogleMapReact>
       </div>
     );

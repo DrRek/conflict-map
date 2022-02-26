@@ -20,11 +20,13 @@ import MenuIcon from "@mui/icons-material/Menu";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AddIcon from "@mui/icons-material/Add";
-import Map from './Map'
-import Fab from '@mui/material/Fab';
+import Map from "./Map";
+import Fab from "@mui/material/Fab";
+import { Modal } from "@mui/material";
+import Slider from "./Slider";
 
 const fabStyle = {
-  position: 'absolute',
+  position: "absolute",
   bottom: 60,
   right: 60,
 };
@@ -33,7 +35,9 @@ function Dashboard() {
   const [user, loading, error] = useAuthState(auth);
   const [name, setName] = useState("");
   const [drawer, setDrawer] = useState(false);
+  const [markers, setMarkers] = useState([]);
   const navigate = useNavigate();
+  const [selectedMarker, setSelectedMarker] = useState(null);
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -46,39 +50,28 @@ function Dashboard() {
     setDrawer(open);
   };
 
-  const fetchUserName = async () => {
-    try {
-      const q = query(collection(db, "users"), where("uid", "==", user?.uid));
-      const doc = await getDocs(q);
-      const data = doc.docs[0].data();
-      setName(data.name);
-    } catch (err) {
-      console.error(err);
-      alert("An error occured while fetching user data");
-    }
-  };
+  useEffect(() => {
+    (async () => {
+      const q = query(collection(db, "events"));
+      const col = await getDocs(q);
 
-  const addData = async () => {
-    try {
-      const res = await addDoc(collection(db, "events"), {
-        title: "Dyn added",
-      });
-      console.log(res);
-      alert("Added with success");
-    } catch (err) {
-      console.error(err);
-      alert("An error occured while adding data");
-    }
-  };
+      setMarkers(
+        col.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            lat: data.latlng[0],
+            lng: data.latlng[1],
+            data: data
+          };
+        })
+      );
+    })();
+  }, []);
 
-  //useEffect(() => {
-  //  if (loading) return;
-  //  if (!user) return navigate("/");
-  //  //fetchUserName();
-  //}, [user, loading]);
+  console.log(selectedMarker)
 
   return (
-    <div>
+    <>
       <AppBar position="static">
         <Toolbar>
           <IconButton onClick={toggleDrawer(true)}>
@@ -134,11 +127,52 @@ function Dashboard() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Map />
-      <Fab sx={fabStyle} color="secondary" aria-label="add" onClick={() => navigate("/add")}>
+      <Slider />
+      <Map markers={markers} setSelectedMarker={setSelectedMarker} />
+      
+      <Fab
+        sx={fabStyle}
+        color="secondary"
+        aria-label="add"
+        onClick={() => navigate("/add")}
+      >
         <AddIcon />
       </Fab>
-    </div>
+
+      <Modal
+        open={!!selectedMarker}
+        onClose={() => setSelectedMarker(null)}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            bgcolor: "background.paper",
+            border: "2px solid #000",
+            boxShadow: 24,
+            pt: 2,
+            px: 4,
+            pb: 3,
+            width: 400,
+          }}
+        >
+          <h2 id="parent-modal-title">{selectedMarker?.title}</h2>
+          <img
+            src={selectedMarker?.imgurl}
+            loading="lazy"
+            alt="img"
+            style={{width: "100%", borderRadius: "10px"}}
+          />
+          <p id="parent-modal-description">
+            {selectedMarker?.desc}
+          </p>
+        </Box>
+      </Modal>
+    </>
   );
 }
 export default Dashboard;
